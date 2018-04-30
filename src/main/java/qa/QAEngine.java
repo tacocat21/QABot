@@ -6,7 +6,7 @@ import elasticsearch.Hit;
 public class QAEngine {
 	/** Elastic Search interface */
 	public final static ElasticSearch elasticSearch = new ElasticSearch("http://localhost:9200/");
-	public final static String INDEX_NAME = "stack_index";
+	public final static String INDEX_NAME = "qas";
 	
 	/**
 	 * Pre process a query before executing it.
@@ -38,6 +38,7 @@ public class QAEngine {
 		Answer answer = new Answer();
 		
 		answer.setUserQuery(query.getOriginalQuery());
+		answer.setHits(hits);
 		return answer;
 	}
 }
