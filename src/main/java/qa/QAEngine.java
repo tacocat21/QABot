@@ -1,11 +1,18 @@
 package qa;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import elasticsearch.ElasticSearch;
 import elasticsearch.Hit;
+import semantic.SemanticAnalyzer;
+import semantic.Vector;
 
 public class QAEngine {
 	/** Elastic Search interface */
 	public final static ElasticSearch elasticSearch = new ElasticSearch("http://localhost:9200/");
+	public final static SemanticAnalyzer semantic = new SemanticAnalyzer("http://localhost:5000/");
 	public final static String INDEX_NAME = "qas";
 	
 	/**
@@ -14,6 +21,11 @@ public class QAEngine {
 	public static Query preProcessQuery(Query originalQuery){
 		Query optimizedQuery = new Query(originalQuery);
 		//modify here optimized query
+		
+		//Generate a the question type for the query
+		String label = semantic.getLabel(optimizedQuery);
+		
+		optimizedQuery.setLabel(label);
 		return optimizedQuery;
 	}
 	
@@ -23,7 +35,7 @@ public class QAEngine {
 	 */
 	public static Answer executeQuery(Query query) {
 		// Send the query to elasticsearch
-		Hit[] hits = elasticSearch.runQuery(INDEX_NAME, query);
+		ArrayList<Hit> hits = elasticSearch.runQuery(INDEX_NAME, query);
 		
 		// Postprocess the result selecting the best answer
 		Answer answer = postProcessHits(query, hits);
@@ -34,9 +46,17 @@ public class QAEngine {
 	 * Given a list of hits (document retrieved from elastic search)
 	 * returns the best answer.
 	 */
-	private static Answer postProcessHits(Query query, Hit[] hits){
+	private static Answer postProcessHits(Query query, ArrayList<Hit> hits){
 		Answer answer = new Answer();
 		
+		//compute the semantic similarity 
+		Vector vector = semantic.getVector(query);
+		for(Hit hit : hits){
+			Vector hitVector = semantic.getVector(hit);
+			double score = vector.cosineSimilarity(hitVector);
+			hit.set_semantic_score(score);
+		}
+		Collections.sort(hits);
 		answer.setUserQuery(query.getOriginalQuery());
 		answer.setHits(hits);
 		return answer;

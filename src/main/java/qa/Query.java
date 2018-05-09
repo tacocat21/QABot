@@ -10,6 +10,9 @@ public class Query {
 	@JsonIgnore
 	private String optimizedQuery;
 	
+	@JsonIgnore
+	private String label;
+	
 	public Query(String query){
 		this.originalQuery = query;
 	}
@@ -21,5 +24,13 @@ public class Query {
 	
 	public String getOriginalQuery(){
 		return this.originalQuery;
+	}
+	
+	public void setLabel(String label){
+		this.label = label;
+	}
+	
+	public String getLabel(){
+		return this.label;
 	}
 }
