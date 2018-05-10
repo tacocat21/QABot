@@ -1,6 +1,9 @@
 package elasticsearch;
 
 import qa.Query;
+
+import java.util.ArrayList;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -23,11 +26,11 @@ public class ElasticSearch {
 	/**
 	 Create a connections to elastic search and run the query. 
 	 */
-	public Hit[] runQuery(String indexName, Query query){
+	public ArrayList<Hit> runQuery(String indexName, Query query){
 		/** Prepare a query content*/
 		String data = this.matchQueryBuilder(query);
 		
-		/** Create a connection with elastic search and run the quesy.*/
+		/** Create a connection with elastic search and run the query.*/
 		WebResource webResource = client.resource(this.hostNamePort + indexName + "/_search?&pretty");
 		ClientResponse response = webResource.type("application/json")
 											 .accept("application/json")

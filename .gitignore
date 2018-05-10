@@ -2,3 +2,6 @@
 .classpath
 .project
 .settings/*
+/classifier/data/*
+/classifier/dataset/*
+/classifier/__pycache__/*

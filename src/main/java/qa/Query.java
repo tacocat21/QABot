@@ -20,6 +20,9 @@ public class Query {
 	@JsonIgnore
 	private String optimizedQuery;
 	
+	@JsonIgnore
+	private String label;
+	
 	public Query(String query){
 		this.originalQuery = query;
 	}
@@ -32,6 +35,7 @@ public class Query {
 	public String getOriginalQuery(){
 		return this.originalQuery;
 	}
+
 
 	/**
 	 * Changes the words to stems in the originalQuery
@@ -50,11 +54,19 @@ public class Query {
 		while (it.hasNext()) {
 			Word token = it.next();
 			result += stemmer.stem(token).word();
-			if(it.hasNext()) {
+			if (it.hasNext()) {
 				result += " ";
 			}
 		}
 		System.err.println(result);
 		return result;
+	}
+
+	public void setLabel(String label){
+		this.label = label;
+	}
+	
+	public String getLabel(){
+		return this.label;
 	}
 }

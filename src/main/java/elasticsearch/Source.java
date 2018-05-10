@@ -1,10 +1,10 @@
 package elasticsearch;
 
-class Source{
+public class Source{
 	String question;
 	String answer;
-	String reference;
-	
+	String label;
+
 	public String getQuestion() {
 		return question;
 	}
@@ -17,11 +17,11 @@ class Source{
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	public String getReference() {
-		return reference;
+	public String getLablel() {
+		return label;
 	}
-	public void setReference(String reference) {
-		this.reference = reference;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	
 }

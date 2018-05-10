@@ -1,9 +1,11 @@
 package elasticsearch;
 
+import java.util.ArrayList;
+
 class Hits{
 	int total;
 	double max_score;
-	Hit[] hits;
+	ArrayList<Hit> hits;
 	
 	public int getTotal() {
 		return total;
@@ -17,10 +19,10 @@ class Hits{
 	public void setMax_score(double max_score) {
 		this.max_score = max_score;
 	}
-	public Hit[] getHits() {
+	public ArrayList<Hit> getHits() {
 		return hits;
 	}
-	public void setHits(Hit[] hits) {
+	public void setHits(ArrayList<Hit> hits) {
 		this.hits = hits;
 	}
 }
