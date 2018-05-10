@@ -22,5 +22,4 @@ public class QueryService {
 		Answer answer = QAEngine.executeQuery(query);
 		return answer;
 	}
-	
 }
