@@ -18,7 +18,7 @@ public class QueryService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Answer getQuery(@PathParam("param") String queryTxt) {
 		Query query = new Query(queryTxt);
-		query = QAEngine.preProcessQuery(query);
+        query = QAEngine.preProcessQuery(query);
 		Answer answer = QAEngine.executeQuery(query);
 		return answer;
 	}

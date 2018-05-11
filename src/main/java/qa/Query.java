@@ -9,6 +9,15 @@ import edu.stanford.nlp.ling.Word;
 import java.io.StringReader;
 import java.util.Iterator;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+
+import java.io.FileReader;
+import java.io.IOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 
 public class Query {
 	private static Morphology stemmer = new Morphology();
@@ -69,4 +78,39 @@ public class Query {
 	public String getLabel(){
 		return this.label;
 	}
+
+	/**
+	 * Iterates through the dataset.json and applies the stemSentence function to every question
+	 * The result is saved in stemmedQuestion key
+	 * @param filename: name of the file to process
+	 * @param outputFilename: output filename
+	 */
+	public static void stemDatabaseQuestions(String filename, String outputFilename) {
+		try {
+			FileWriter fw = new FileWriter(outputFilename);
+			JsonParser parser = new JsonParser();
+			File file = new File(filename);
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+			int idx = 0;
+			while ((line = bufferedReader.readLine()) != null) {
+				// only get the question documents not the index
+				if(idx++%2==0){
+					fw.write(line + "\n");
+					continue;
+				}
+				JsonObject json = parser.parse(line).getAsJsonObject();
+				String question = json.get("question").getAsString();
+				String stemmedQuestion = stemSentence(question);
+				json.addProperty("stemmedQuestion", stemmedQuestion);
+				fw.write(json.toString() + "\n");
+			}
+			fw.close();
+			fileReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
