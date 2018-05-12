@@ -4,6 +4,7 @@
 # Results achieved are NOT identical to that reported in the paper, but
 # this is very likely due to the differences in the way the algorithm was
 # described in the paper and how I implemented it.
+
 from __future__ import division
 import nltk
 from nltk.corpus import wordnet as wn
@@ -41,7 +42,7 @@ def get_best_synset_pair(word_1, word_2):
         for synset_1 in synsets_1:
             for synset_2 in synsets_2:
                sim = wn.path_similarity(synset_1, synset_2)
-               if sim > max_sim:
+               if sim and sim > max_sim:
                    max_sim = sim
                    best_pair = synset_1, synset_2
         return best_pair
@@ -52,7 +53,7 @@ def length_dist(synset_1, synset_2):
     ontology (Wordnet in our case as well as the paper's) between two 
     synsets.
     """
-    l_dist = sys.maxint
+    l_dist = np.inf
     if synset_1 is None or synset_2 is None: 
         return 0.0
     if synset_1 == synset_2:
@@ -70,7 +71,7 @@ def length_dist(synset_1, synset_2):
             if l_dist is None:
                 l_dist = 0.0
     # normalize path length to the range [0,1]
-    return math.exp(-ALPHA * l_dist)
+    return np.exp(-ALPHA * l_dist)
 
 def hierarchy_dist(synset_1, synset_2):
     """
@@ -78,7 +79,7 @@ def hierarchy_dist(synset_1, synset_2):
     nodes closer to the root are broader and have less semantic similarity
     than nodes further away from the root.
     """
-    h_dist = sys.maxint
+    h_dist = np.inf
     if synset_1 is None or synset_2 is None: 
         return h_dist
     if synset_1 == synset_2:
@@ -94,17 +95,17 @@ def hierarchy_dist(synset_1, synset_2):
             lcs_dists = []
             for lcs_candidate in lcs_candidates:
                 lcs_d1 = 0
-                if hypernyms_1.has_key(lcs_candidate):
+                if lcs_candidate in hypernyms_1:
                     lcs_d1 = hypernyms_1[lcs_candidate]
                 lcs_d2 = 0
-                if hypernyms_2.has_key(lcs_candidate):
+                if lcs_candidate in hypernyms_2:
                     lcs_d2 = hypernyms_2[lcs_candidate]
                 lcs_dists.append(max([lcs_d1, lcs_d2]))
             h_dist = max(lcs_dists)
         else:
             h_dist = 0
-    return ((math.exp(BETA * h_dist) - math.exp(-BETA * h_dist)) / 
-        (math.exp(BETA * h_dist) + math.exp(-BETA * h_dist)))
+    return ((np.exp(BETA * h_dist) - np.exp(-BETA * h_dist)) / 
+        (np.exp(BETA * h_dist) + np.exp(-BETA * h_dist)))
     
 def word_similarity(word_1, word_2):
     synset_pair = get_best_synset_pair(word_1, word_2)

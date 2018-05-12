@@ -6,7 +6,7 @@ Created on Wed May  9 18:25:01 2018
 @author: riccardo
 """
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from sklearn.externals import joblib
 from data_processing import get_word_dictionary, quest2vect, average_vector
 from short_sentence_similarity import semantic_similarity, similarity #added by terra
@@ -36,7 +36,6 @@ def vector(question):
 @app.route('/semantic/', methods=['GET'])
 def semantic():
     check = request.args.to_dict()
-    print check
     score = semantic_similarity(check['query'].lower(), check['hit'].lower(), False)
     return jsonify({'score': score})
 

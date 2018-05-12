@@ -48,12 +48,19 @@ public class ElasticSearch {
 	}
 	
 	/**
-	 * Generete a match query 
+	 * Generate a match query 
 	 */
 	private String matchQueryBuilder(Query query){
 		String s = "{" + 
-				   "\"query\": {\"match\": { \"question\": \"" + query.getOptimizedQuery() +"\" } }" + 
-				   "}";
+				   "\"query\": {"
+				   +   "\"bool\": { " 
+				   +     "\"must\" : ["
+				   +        "{\"match\": { \"stemmedQuestion\": \"" + query.getOptimizedQuery() +"\" } }, "
+				   +        "{\"match\": { \"label\": \"" + query.getLabel() +"\" } }"
+				   +     "]"
+				   +   "}"
+				   + "}"
+				   +"}";
 		return s;
 	}
 }
