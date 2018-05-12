@@ -9,6 +9,7 @@ Created on Wed May  9 18:25:01 2018
 from flask import Flask, jsonify
 from sklearn.externals import joblib
 from data_processing import get_word_dictionary, quest2vect, average_vector
+from short_sentence_similarity import semantic_similarity, similarity #added by terra
 
 app = Flask(__name__)
 
@@ -30,6 +31,14 @@ def label(question):
 def vector(question):
     vector = average_vector(word_vector, question, vector_dim)
     return jsonify({'vector': vector.tolist()})
+
+#added by terra
+@app.route('/semantic/', methods=['GET'])
+def semantic():
+    check = request.args.to_dict()
+    print check
+    score = semantic_similarity(check['query'].lower(), check['hit'].lower(), False)
+    return jsonify({'score': score})
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
