@@ -4,6 +4,7 @@ Created on Mon May  7 17:12:57 2018
 @author: riccardo
 """
 import numpy as np
+import codecs
 
 def load_data(filename):
     questions = []
@@ -50,7 +51,8 @@ def quest2vect(dictionary, question, vector_dim):
 Return the dictionary word->vector
 """
 def get_word_dictionary(word_vector_path, vector_dim):
-    word_vector = np.loadtxt(word_vector_path, dtype='str', comments=None)
+    filecp = codecs.open(word_vector_path, encoding = 'utf-8')
+    word_vector = np.loadtxt(filecp, dtype='str', comments=None)
     keys = word_vector[:,0]
     values = word_vector[:, 1:].astype('float')
     word_vector = {}
