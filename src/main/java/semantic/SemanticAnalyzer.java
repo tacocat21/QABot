@@ -74,4 +74,22 @@ public class SemanticAnalyzer {
 	public Vector getVector(Hit hit){
 		return this.getVector(hit.get_source().getQuestion());
 	}
+    public double getSemanticScore(Query query, Hit hit){
+        String query_encoded = query.getOriginalQuery().replace(" ", "%20");
+        String hit_encoded   = hit.get_source().getQuestion().replace(" ", "%20");
+        /** Create a connection with server classifier.*/ //?a=hello&b=world
+        WebResource webResource = client.resource(this.hostNamePort + "semantic/?query=" + query_encoded + "&hit=" + hit_encoded);
+        ClientResponse response = webResource.type("application/json")
+        .accept("application/json")
+        .get(ClientResponse.class);
+        if(response.getStatus() == 200){
+            SemanticScore result = response.getEntity(SemanticScore.class);
+            return result.getScore();
+        }
+        else{
+            System.err.println("Wrong result from the classifier: status " + response.getStatus());
+        }
+        return 0.0;
+    }
+
 }

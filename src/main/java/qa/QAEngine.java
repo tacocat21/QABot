@@ -53,19 +53,27 @@ public class QAEngine {
 	 * Given a list of hits (document retrieved from elastic search)
 	 * returns the best answer.
 	 */
-	private static Answer postProcessHits(Query query, ArrayList<Hit> hits){
-		Answer answer = new Answer();
-		
-		//compute the semantic similarity 
-		Vector vector = semantic.getVector(query);
-		for(Hit hit : hits){
-			Vector hitVector = semantic.getVector(hit);
-			double score = vector.cosineSimilarity(hitVector);
-			hit.set_semantic_score(score);
-		}
-		Collections.sort(hits);
-		answer.setUserQuery(query.getOriginalQuery());
-		answer.setHits(hits);
-		return answer;
-	}
+    private static Answer postProcessHits(Query query, ArrayList<Hit> hits){
+        Answer answer = new Answer();
+        
+        /*/compute the semantic similarity
+         Vector vector = semantic.getVector(query);
+         for(Hit hit : hits){
+         Vector hitVector = semantic.getVector(hit);
+         double score = vector.cosineSimilarity(hitVector);
+         hit.set_semantic_score(score);
+         }
+         /*///second version of semantic similarity
+        for(Hit hit : hits){
+            double score = semantic.getSemanticScore(query,hit);
+            hit.set_semantic_score(score);
+        }
+        // */
+        Collections.sort(hits);
+        answer.setUserQuery(query.getOriginalQuery());
+        answer.setHits(hits);
+        answer.setAnswer(hits.get(0).get_source().getAnswer());
+        answer.setMatchedQuestion(hits.get(0).get_source().getQuestion());
+        return answer;
+    }
 }

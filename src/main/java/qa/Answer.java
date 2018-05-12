@@ -41,4 +41,13 @@ public class Answer {
 	public void setHits(ArrayList<Hit> hits){
 		this.hits = hits;
 	}
+    
+    public void setAnswer(String answer){
+        this.answer = answer;
+    }
+    
+    public void setMatchedQuestion(String matchedQuestion){
+        this.matchedQuestion = matchedQuestion;
+    }
+    
 }
