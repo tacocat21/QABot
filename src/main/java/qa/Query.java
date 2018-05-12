@@ -45,6 +45,9 @@ public class Query {
 		return this.originalQuery;
 	}
 
+	public String getOptimizedQuery(){
+		return this.optimizedQuery;
+	}
 
 	/**
 	 * Changes the words to stems in the originalQuery

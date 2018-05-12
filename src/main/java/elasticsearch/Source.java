@@ -4,7 +4,17 @@ public class Source{
 	String question;
 	String answer;
 	String label;
-
+	String stemmedQuestion;
+	
+	public String getStemmedQuestion() {
+		return stemmedQuestion;
+	}
+	public void setStemmedQuestion(String stemmedQuestion) {
+		this.stemmedQuestion = stemmedQuestion;
+	}
+	public String getLabel() {
+		return label;
+	}
 	public String getQuestion() {
 		return question;
 	}

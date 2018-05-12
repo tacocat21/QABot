@@ -52,7 +52,7 @@ public class ElasticSearch {
 	 */
 	private String matchQueryBuilder(Query query){
 		String s = "{" + 
-				   "\"query\": {\"match\": { \"question\": \"" + query.getOriginalQuery() +"\" } }" + 
+				   "\"query\": {\"match\": { \"question\": \"" + query.getOptimizedQuery() +"\" } }" + 
 				   "}";
 		return s;
 	}

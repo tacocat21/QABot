@@ -1,7 +1,6 @@
 package qa;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import elasticsearch.ElasticSearch;

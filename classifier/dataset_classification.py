@@ -9,10 +9,10 @@ import json
 from data_processing import get_word_dictionary, quest2vect
 
 vector_dim = 50
-datset_file = 'dataset/origin.json'
+datset_file = 'dataset/datasetStem.json'
 word_vector_path = "data/glove.6B.50d.txt"
 cls = joblib.load('data/random_forest.pkl')
-output_file = 'dataset/classified.json'
+output_file = 'dataset/stam_classified.json'
 count = 0
 index_name='qas'
 
@@ -35,7 +35,8 @@ with open(datset_file, 'r') as ds:
         if 'question' in json_obj.keys():
             question = json_obj['question']
             answer = json_obj['answer']
+            stemmedQuestion = json_obj['stemmedQuestion']
             label = cls.predict(quest2vect(word_vector, question, vector_dim)[None])[0]
-            qa_body = "{\"question\":\"%s\",\"answer\":\"%s\", \"label\":\"%s\"}\n" % (question, answer, label) 
+            qa_body = "{\"question\":\"%s\",\"answer\":\"%s\", \"stemmedQuestion\": \"%s\", \"label\":\"%s\"}\n" % (question, answer, stemmedQuestion, label) 
             f.write(qa_body)
 f.close()
