@@ -14,11 +14,11 @@ from short_sentence_similarity import semantic_similarity, similarity #added by 
 app = Flask(__name__)
 
 print('Loading Classifier')
-cls = joblib.load('data/random_forest.pkl')
+cls = joblib.load('classifier/data/random_forest.pkl')
 
 print('Loading Word2Vector model...')
 vector_dim = 50
-word_vector_path = "data/glove.6B.50d.txt"
+word_vector_path = "classifier/data/glove.6B.50d.txt"
 word_vector = get_word_dictionary(word_vector_path, vector_dim)
     
 @app.route('/label/<question>', methods=['GET'])

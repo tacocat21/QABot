@@ -12,11 +12,11 @@ from scipy.stats import randint as sp_randint
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.externals import joblib
 
-X_train, Y_train = np.loadtxt('data/X_train'), \
-                   np.loadtxt('data/Y_coarse_train', dtype=str)
+X_train, Y_train = np.loadtxt('classifier/data/X_train'), \
+                   np.loadtxt('classifier/data/Y_coarse_train', dtype=str)
                    
-X_test, Y_test = np.loadtxt('data/X_test'),\
-                 np.loadtxt('data/Y_coarse_test', dtype=str)
+X_test, Y_test = np.loadtxt('classifier/data/X_test'),\
+                 np.loadtxt('classifier/data/Y_coarse_test', dtype=str)
 
 # Utility function to report best scores
 def report(results, n_top=3):
@@ -58,7 +58,7 @@ def best_classifier():
                                 min_samples_leaf=3,
                                 min_samples_split=3)
     rf.fit(X_train, Y_train)
-    joblib.dump(rf, 'data/random_forest.pkl') 
+    joblib.dump(rf, 'classifier/data/random_forest.pkl') 
     print("Train accuracy %f" % rf.score(X_train, Y_train))
     print("Test accuracy %f"  % rf.score(X_test, Y_test))
 
